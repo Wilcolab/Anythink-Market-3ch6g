@@ -21,12 +21,12 @@ async function seedDB() {
     await client.connect();
     console.log("Connected correctly to server");
 
-    const db = client.db("admin");
+    const db = client.db("anythink-market");
 
     try {
-      db.createCollection("users");
-      db.createCollection("items");
-      db.createCollection("comments");
+      await db.createCollection("users");
+      await db.createCollection("items");
+      await db.createCollection("comments");
     } catch (e) {
       console.log("failed creating", e);
     }
