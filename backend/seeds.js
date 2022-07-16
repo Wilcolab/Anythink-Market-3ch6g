@@ -67,7 +67,7 @@ async function insertUsersCollection(collection) {
   try {
     await collection.drop();
   } catch (error) {
-    logger.warn("collection wasn't dropped:", { error });
+    console.log("collection wasn't dropped:", { error });
   }
 
   // make a bunch of time series data
@@ -89,7 +89,7 @@ async function insertItemsCollection(collection) {
   try {
     await collection.drop();
   } catch (error) {
-    logger.warn("collection wasn't dropped:", { error });
+    console.log("collection wasn't dropped:", { error });
   }
 
   // make a bunch of time series data
@@ -112,7 +112,7 @@ async function insertCommentsCollection(collection, parentItemId) {
   try {
     await collection.drop();
   } catch (error) {
-    logger.warn("collection wasn't dropped:", { error });
+    console.log("collection wasn't dropped:", { error });
   }
 
   // make a bunch of time series data
