@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "mongoose-seed": "^0.6.0"
+  }
+}
