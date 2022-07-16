@@ -1,3 +1,1 @@
-#!/bin/sh
-
-yarn seeds
+node seeds.js MONGODB_URI=mongodb://localhost/anythink-market
