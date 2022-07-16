@@ -35,7 +35,7 @@ async function seedDB() {
     const itemsResult = await insertItemsCollection(db.collection("items"));
     console.log(itemsResult["0"]);
     const commentsResult = await insertCommentsCollection(
-      db.collection("items"),
+      db.collection("comments"),
       usersResult["0"],
       itemsResult["0"]
     );
