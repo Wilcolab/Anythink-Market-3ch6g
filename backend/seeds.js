@@ -23,6 +23,13 @@ async function seedDB() {
 
     const db = client.db("admin");
 
+    try {
+      db.createCollection("users");
+      db.createCollection("items");
+      db.createCollection("comments");
+    } catch (e) {
+      console.log("failed creating", e);
+    }
     const usersResult = await insertUsersCollection(db.collection("users"));
     const itemsResult = await insertItemsCollection(db.collection("items"));
     console.log(itemsResult["0"]);
