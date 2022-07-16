@@ -31,10 +31,12 @@ async function seedDB() {
       console.log("failed creating", e);
     }
     const usersResult = await insertUsersCollection(db.collection("users"));
+    console.log(usersResult["0"]);
     const itemsResult = await insertItemsCollection(db.collection("items"));
     console.log(itemsResult["0"]);
     const commentsResult = await insertCommentsCollection(
       db.collection("items"),
+      usersResult["0"],
       itemsResult["0"]
     );
 
@@ -90,7 +92,7 @@ async function insertUsersCollection(collection) {
   }
   const result = await collection.insertMany(users);
   console.log("finish insert users");
-  return result;
+  return result.insertedIds;
 }
 async function insertItemsCollection(collection) {
   try {
@@ -115,7 +117,11 @@ async function insertItemsCollection(collection) {
   console.log("finish insert items");
   return result.insertedIds;
 }
-async function insertCommentsCollection(collection, parentItemId) {
+async function insertCommentsCollection(
+  collection,
+  parentUserId,
+  parentItemId
+) {
   try {
     await collection.drop();
   } catch (error) {
@@ -128,7 +134,8 @@ async function insertCommentsCollection(collection, parentItemId) {
   for (let i = 1; i <= 100; i++) {
     comments.push({
       body: `body${i}`,
-      parentItemId: parentItemId,
+      seller: parentUserId,
+      item: parentItemId,
       createdAt: "2022-06-27T19:18:54.429+00:00",
       updatedAt: "2022-06-27T19:19:05.059+00:00",
     });
