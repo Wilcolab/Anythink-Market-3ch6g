@@ -27,9 +27,9 @@ export default function CommentInput(props) {
       </div>
       <div className="card-footer">
         <img
-          src={this.props.currentUser.image}
+          src={props.currentUser.image}
           className="user-pic mr-2"
-          alt={this.props.currentUser.username}
+          alt={props.currentUser.username}
         />
         <button className="btn btn-sm btn-primary" type="submit">
           Post Comment
