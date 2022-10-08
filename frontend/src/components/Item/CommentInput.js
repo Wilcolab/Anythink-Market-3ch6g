@@ -10,7 +10,7 @@ export default function CommentInput(props) {
       body: body,
     });
 
-    props.onSubmit(payload);
+    //props.onSubmit(payload);
     setBody("");
   }
 
