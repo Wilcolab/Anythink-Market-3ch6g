@@ -3,7 +3,6 @@ import { mount } from "enzyme";
 import configureMockStore from "redux-mock-store";
 import CommentInput from "../../components/Item/CommentInput";
 import agent from "../../agent";
-import { ADD_COMMENT } from "../../constants/actionTypes";
 
 const mockStore = configureMockStore();
 agent.Comments.create = jest.fn();
