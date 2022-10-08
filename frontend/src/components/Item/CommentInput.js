@@ -4,7 +4,7 @@ import agent from "../../agent";
 export default function CommentInput(props) {
   const [body, setBody] = useState("");
 
-  const createComment = async function (ev) {
+  const createComment = async (ev) => {
     ev.preventDefault();
     const tmpBody = body;
     setBody("");
