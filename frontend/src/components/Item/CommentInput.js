@@ -6,12 +6,11 @@ export default function CommentInput(props) {
 
   async function createComment(ev) {
     ev.preventDefault();
-    const payload = await agent.Comments.create(props.slug, {
-      body: body,
-    });
-
-    //props.onSubmit(payload);
+    const tmpBody = body;
     setBody("");
+    const payload = await agent.Comments.create(props.slug, {
+      body: tmpBody,
+    });
   }
 
   return (
@@ -21,7 +20,7 @@ export default function CommentInput(props) {
           className="form-control"
           placeholder="Write a comment..."
           value={body}
-          onChange={setBody}
+          onChange={(event) => setBody(event.target.value)}
           rows="3"
         ></textarea>
       </div>
