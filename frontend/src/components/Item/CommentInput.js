@@ -8,7 +8,7 @@ export default function CommentInput(props) {
     ev.preventDefault();
     const tmpBody = body;
     setBody("");
-    const payload = await agent.Comments.create(props.slug, {
+    await agent.Comments.create(props.slug, {
       body: tmpBody,
     });
   };
