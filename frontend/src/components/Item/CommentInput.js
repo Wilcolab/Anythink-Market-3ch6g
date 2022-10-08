@@ -4,14 +4,14 @@ import agent from "../../agent";
 export default function CommentInput(props) {
   const [body, setBody] = useState("");
 
-  async function createComment(ev) {
+  const createComment = async function (ev) {
     ev.preventDefault();
     const tmpBody = body;
     setBody("");
-    await agent.Comments.create(props.slug, {
+    const payload = await agent.Comments.create(props.slug, {
       body: tmpBody,
     });
-  }
+  };
 
   return (
     <form className="card comment-form m-2" onSubmit={createComment}>
