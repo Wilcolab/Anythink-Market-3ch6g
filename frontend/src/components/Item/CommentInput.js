@@ -1,59 +1,64 @@
-import React from "react";
+import { create } from "react-test-renderer";
+import { mount } from "enzyme";
+import configureMockStore from "redux-mock-store";
+import CommentInput from "../../components/Item/CommentInput";
 import agent from "../../agent";
-import { connect } from "react-redux";
 import { ADD_COMMENT } from "../../constants/actionTypes";
 
-const mapDispatchToProps = (dispatch) => ({
-  onSubmit: (payload) => dispatch({ type: ADD_COMMENT, payload }),
-});
+const mockStore = configureMockStore();
+agent.Comments.create = jest.fn();
 
-class CommentInput extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      body: "",
-    };
+describe("CommentInput component", () => {
+  let store;
 
-    this.setBody = (ev) => {
-      this.setState({ body: ev.target.value });
-    };
+  beforeEach(() => {
+    store = mockStore({});
+  });
 
-    this.createComment = async (ev) => {
-      ev.preventDefault();
-      agent.Comments.create(this.props.slug, {
-        body: this.state.body,
-      }).then((payload) => {
-        this.props.onSubmit(payload);
-      });
-      this.setState({ body: "" });
-    };
-  }
-
-  render() {
-    return (
-      <form className="card comment-form m-2" onSubmit={this.createComment}>
-        <div className="card-block">
-          <textarea
-            className="form-control"
-            placeholder="Write a comment..."
-            value={this.state.body}
-            onChange={this.setBody}
-            rows="3"
-          ></textarea>
-        </div>
-        <div className="card-footer">
-          <img
-            src={this.props.currentUser.image}
-            className="user-pic mr-2"
-            alt={this.props.currentUser.username}
-          />
-          <button className="btn btn-sm btn-primary" type="submit">
-            Post Comment
-          </button>
-        </div>
-      </form>
+  it("Snapshot testing with no user", () => {
+    const component = create(
+      <CommentInput
+        store={store}
+        slug={"slug"}
+        currentUser={{ username: "name", image: "" }}
+      />
     );
-  }
-}
+    let tree = component.toJSON();
+    expect(tree).toMatchSnapshot();
+  });
 
-export default connect(() => ({}), mapDispatchToProps)(CommentInput);
+  it("Submit text", () => {
+    const user = { username: "name", image: "" };
+    const component = mount(
+      <CommentInput store={store} slug={"slug"} currentUser={user} />
+    );
+    const comment = { id: 1 };
+    agent.Comments.create.mockResolvedValue(comment);
+
+    const event = { target: { value: "sometext" } };
+    component.find("textarea").simulate("change", event);
+    component.find("form").simulate("submit");
+
+    setImmediate(async () => {
+      expect(store.getActions()).toHaveLength(1);
+      expect(store.getActions()[0].type).toEqual(ADD_COMMENT);
+      expect(await store.getActions()[0].payload).toEqual(comment);
+    });
+  });
+
+  it("Clear text after submit", async () => {
+    const user = { username: "name", image: "" };
+
+    const component = mount(
+      <CommentInput store={store} slug={"slug"} currentUser={user} />
+    );
+
+    const comment = { id: 1 };
+    agent.Comments.create.mockResolvedValue(comment);
+
+    const event = { target: { value: "sometext" } };
+    component.find("textarea").simulate("change", event);
+    component.find("form").simulate("submit");
+    expect(component.find("textarea").text()).toHaveLength(0);
+  });
+});
