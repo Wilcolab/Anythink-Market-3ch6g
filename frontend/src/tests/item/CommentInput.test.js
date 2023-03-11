@@ -3,6 +3,7 @@ import { mount } from "enzyme";
 import configureMockStore from "redux-mock-store";
 import CommentInput from "../../components/Item/CommentInput";
 import agent from "../../agent";
+import { ADD_COMMENT } from "../../constants/actionTypes";
 
 const mockStore = configureMockStore();
 agent.Comments.create = jest.fn();
@@ -39,9 +40,9 @@ describe("CommentInput component", () => {
     component.find("form").simulate("submit");
 
     setImmediate(async () => {
-      expect(store.getActions()).toHaveLength(0);
-      // expect(store.getActions()[0].type).toEqual(ADD_COMMENT);
-      // expect(await store.getActions()[0].payload).toEqual(comment);
+      expect(store.getActions()).toHaveLength(1);
+      expect(store.getActions()[0].type).toEqual(ADD_COMMENT);
+      expect(await store.getActions()[0].payload).toEqual(comment);
     });
   });
 
