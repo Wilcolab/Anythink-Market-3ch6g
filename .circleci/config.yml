@@ -4,14 +4,15 @@ jobs:
   build-and-test:
     docker:
       - image: cimg/node:16.18
+    working_directory: frontend
     steps:
       - checkout
       - run:
           name: Install deps
-          command: cd frontend/ && yarn install
+          command: yarn install
       - run:
           name: Run tests
-          command: cd frontend/ && yarn test
+          command: yarn test
 
 workflows:
   build-and-test:
